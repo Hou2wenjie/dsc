@@ -1,0 +1,44 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "site.wenjiehou"
+    },
+    "jhipsterVersion": "6.5.1",
+    "applicationType": "monolith",
+    "baseName": "dsc",
+    "packageName": "site.wenjiehou",
+    "packageFolder": "site/wenjiehou",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "postgresql",
+    "prodDatabaseType": "postgresql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "ZjIzMWVhY2JkNjc0MjFjYjE1NDRhZGFkYzhhMTBjODZkODE2NDE3NDhiYTUyMDY3Y2ZlY2Y4NzhkYmI0ZTE1NDA2YTE4MTMzMjA3ZTgxYmZiMWI2NzQ1NjI0MTJjNmM3MGQ3YWRiM2Y2M2MwNjg3ODQyM2ZmNjhkMWE1NWM0MjY=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": "",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [
+      {
+        "name": "generator-jhipster-docker",
+        "version": "2.5.0"
+      }
+    ],
+    "enableTranslation": false,
+    "blueprints": []
+  }
+}

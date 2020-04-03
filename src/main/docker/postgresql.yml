@@ -1,0 +1,11 @@
+version: '2'
+services:
+  dsc-postgresql:
+    image: postgres:11.5
+    # volumes:
+    #     - ~/volumes/jhipster/dsc/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=dsc
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432
