@@ -1,0 +1,32 @@
+{
+    "name": "Round",
+    "fields": [
+        {
+            "fieldName": "startTime",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "endTime",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "maxCap",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "currentCap",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200403191755",
+    "entityTableName": "round",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

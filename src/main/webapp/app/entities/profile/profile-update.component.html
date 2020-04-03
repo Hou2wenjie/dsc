@@ -1,0 +1,117 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-profile-heading">Create or edit a Profile</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_name">Name</label>
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_gender">Gender</label>
+                    <select class="form-control" name="gender" formControlName="gender" id="field_gender">
+                        <option value="MALE">MALE</option>
+                        <option value="FEMALE">FEMALE</option>
+                        <option value="DIVERSE">DIVERSE</option>
+                    </select>
+                    <div *ngIf="editForm.get('gender').invalid && (editForm.get('gender').dirty || editForm.get('gender').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('gender').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_age">Age</label>
+                    <input type="number" class="form-control" name="age" id="field_age"
+                           formControlName="age"/>
+                    <div *ngIf="editForm.get('age').invalid && (editForm.get('age').dirty || editForm.get('age').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('age').errors.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('age').errors.min">
+                            This field should be at least 18.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('age')?.errors?.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_phoneNr">Phone Nr</label>
+                    <input type="text" class="form-control" name="phoneNr" id="field_phoneNr"
+                           formControlName="phoneNr"/>
+                    <div *ngIf="editForm.get('phoneNr').invalid && (editForm.get('phoneNr').dirty || editForm.get('phoneNr').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('phoneNr').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_reseme">Reseme</label>
+                    <div>
+                        <div *ngIf="editForm.get('reseme').value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('resemeContentType').value, editForm.get('reseme').value)">open</a><br>
+                            <span class="pull-left">{{editForm.get('resemeContentType').value}}, {{byteSize(editForm.get('reseme').value)}}</span>
+                            <button type="button" (click)="editForm.patchValue({reseme: null});editForm.patchValue({resemeContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon [icon]="'times'"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_reseme" (change)="setFileData($event, 'reseme', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="reseme" id="field_reseme"
+                           formControlName="reseme"/>
+                    <input type="hidden" class="form-control" name="resemeContentType" id="field_resemeContentType"
+                           formControlName="resemeContentType" />
+                    <div *ngIf="editForm.get('reseme').invalid && (editForm.get('reseme').dirty || editForm.get('reseme').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('reseme').errors.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_user">User</label>
+                    <select class="form-control" id="field_user" name="user" formControlName="user">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="userOption.id === editForm.get('user').value?.id ? editForm.get('user').value : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_address">Address</label>
+                    <select class="form-control" id="field_address" name="address" formControlName="address">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="addressOption.id === editForm.get('address').value?.id ? editForm.get('address').value : addressOption" *ngFor="let addressOption of addresses; trackBy: trackAddressById">{{addressOption.id}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

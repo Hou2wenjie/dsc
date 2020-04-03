@@ -38,8 +38,8 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:5432/dsc
-    username: dsc
-    password:
+    username: wenjiehou
+    password: Hou2wenjie
     hikari:
       poolName: Hikari
       auto-commit: false

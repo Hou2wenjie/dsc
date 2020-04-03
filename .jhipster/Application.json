@@ -1,0 +1,44 @@
+{
+    "name": "Application",
+    "fields": [
+        {
+            "fieldName": "state",
+            "fieldType": "State",
+            "fieldValues": "CREATED,REVIEWING,APPROVED,DENIED"
+        },
+        {
+            "fieldName": "end",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "lastChanged",
+            "fieldType": "LocalDate"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "profile",
+            "otherEntityRelationshipName": "application",
+            "relationshipName": "profile",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "round",
+            "otherEntityRelationshipName": "application",
+            "relationshipName": "round",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200403191756",
+    "entityTableName": "application",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

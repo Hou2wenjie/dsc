@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-round-heading">Create or edit a Round</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_startTime">Start Time</label>
+                    <div class="input-group">
+                        <input id="field_startTime" type="text" class="form-control" name="startTime" ngbDatepicker  #startTimeDp="ngbDatepicker" formControlName="startTime"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="startTimeDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_endTime">End Time</label>
+                    <div class="input-group">
+                        <input id="field_endTime" type="text" class="form-control" name="endTime" ngbDatepicker  #endTimeDp="ngbDatepicker" formControlName="endTime"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="endTimeDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_maxCap">Max Cap</label>
+                    <input type="number" class="form-control" name="maxCap" id="field_maxCap"
+                           formControlName="maxCap"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_currentCap">Current Cap</label>
+                    <input type="number" class="form-control" name="currentCap" id="field_currentCap"
+                           formControlName="currentCap"/>
+                </div>
+
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
