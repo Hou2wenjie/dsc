@@ -36,9 +36,29 @@
       {
         "name": "generator-jhipster-docker",
         "version": "2.5.0"
+      },
+      {
+        "name": "generator-jhipster-login-page",
+        "version": "1.0.0"
       }
     ],
     "enableTranslation": false,
-    "blueprints": []
+    "blueprints": [
+      {
+        "name": "generator-jhipster-login-page",
+        "version": "1.0.0"
+      }
+    ]
+  },
+  "generator-jhipster-login-page": {
+    "jhipsterVersion": "6.5.1",
+    "applicationType": "monolith",
+    "baseName": "dsc",
+    "useSass": true,
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "none",
+    "clientThemeVariant": ""
   }
 }

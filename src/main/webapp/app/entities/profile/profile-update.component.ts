@@ -98,6 +98,7 @@ export class ProfileUpdateComponent implements OnInit {
       if (event && event.target && event.target.files && event.target.files[0]) {
         const file: File = event.target.files[0];
         if (isImage && !file.type.startsWith('image/')) {
+          window.alert(`File was expected to be an image but was found to be ${file.type}`);
           reject(`File was expected to be an image but was found to be ${file.type}`);
         } else {
           const filedContentType: string = field + 'ContentType';

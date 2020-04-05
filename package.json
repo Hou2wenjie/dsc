@@ -85,6 +85,7 @@
     "tslint": "5.19.0",
     "typescript": "3.4.5",
     "generator-jhipster-docker": "2.5.0",
+    "generator-jhipster-login-page": "1.0.0",
     "@openapitools/openapi-generator-cli": "0.0.14-4.0.2",
     "webpack": "4.39.3",
     "webpack-cli": "3.3.7",
