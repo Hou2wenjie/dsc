@@ -1,6 +1,7 @@
 package site.wenjiehou.service;
 
 import io.github.jhipster.config.JHipsterProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import site.wenjiehou.config.audit.AuditEventConverter;
 import site.wenjiehou.repository.PersistenceAuditEventRepository;
 import org.slf4j.Logger;

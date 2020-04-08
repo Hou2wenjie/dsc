@@ -1,22 +1,25 @@
 package site.wenjiehou.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import site.wenjiehou.domain.User;
 
 import io.github.jhipster.config.JHipsterProperties;
 
+import java.util.Properties;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -27,6 +30,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 public class MailService {
+    private static final String Username = "youremail@gmail.com";
+
+    private static final String Password = "secret";
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
@@ -42,11 +48,29 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
+    private JavaMailSender getJavaMailSender()
+    {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+
+        mailSender.setUsername(Username);
+        mailSender.setPassword(Password);
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "true");
+
+        return mailSender;
+    }
+
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
             MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
-        this.javaMailSender = javaMailSender;
+        this.javaMailSender = getJavaMailSender();
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
     }
