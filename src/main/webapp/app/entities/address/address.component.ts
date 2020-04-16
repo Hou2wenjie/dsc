@@ -18,6 +18,10 @@ export class AddressComponent implements OnInit, OnDestroy {
 
   constructor(protected addressService: AddressService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
 
+  loadPersionalInfo() {
+    //this.addressService.find(id)
+  }
+
   loadAll() {
     this.addressService.query().subscribe((res: HttpResponse<IAddress[]>) => {
       this.addresses = res.body;

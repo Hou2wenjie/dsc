@@ -1,6 +1,5 @@
 package site.wenjiehou.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import site.wenjiehou.domain.User;
 
@@ -30,9 +29,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 public class MailService {
-    private static final String Username = "youremail@gmail.com";
+    private static final String Username = "hello.zhouhongkuan@gmail.com";
 
-    private static final String Password = "secret";
+    private static final String Password = "zhkshizhu123456";
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
