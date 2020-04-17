@@ -30,7 +30,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./account/account.module').then(m => m.DscAccountModule)
         },
         {
-          path: 'painel',
+          path: 'home',
           loadChildren: () => import('./home/home.module').then(m => m.DscHomeModule)
         },
         {

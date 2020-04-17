@@ -1,5 +1,6 @@
 package site.wenjiehou.web.rest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import site.wenjiehou.domain.Address;
 import site.wenjiehou.repository.AddressRepository;
 import site.wenjiehou.web.rest.errors.BadRequestAlertException;
@@ -10,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -72,6 +73,7 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/addresses")
+    @PreAuthorize("ADMIN")
     public ResponseEntity<Address> updateAddress(@Valid @RequestBody Address address) throws URISyntaxException {
         log.debug("REST request to update Address : {}", address);
         if (address.getId() == null) {

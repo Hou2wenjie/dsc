@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IAddress } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
 import { AddressDeleteDialogComponent } from './address-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-address',
@@ -16,7 +17,12 @@ export class AddressComponent implements OnInit, OnDestroy {
   addresses: IAddress[];
   eventSubscriber: Subscription;
 
-  constructor(protected addressService: AddressService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
+  constructor(
+    protected addressService: AddressService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal,
+    protected accout: AccountService
+  ) {}
 
   loadPersionalInfo() {
     //this.addressService.find(id)

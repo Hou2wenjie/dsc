@@ -1,7 +1,11 @@
 package site.wenjiehou.web.rest;
 
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import site.wenjiehou.domain.Profile;
 import site.wenjiehou.repository.ProfileRepository;
+import site.wenjiehou.security.SecurityUtils;
 import site.wenjiehou.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -90,7 +94,13 @@ public class ProfileResource {
     @GetMapping("/profiles")
     public List<Profile> getAllProfiles() {
         log.debug("REST request to get all Profiles");
-        return profileRepository.findAll();
+        if (SecurityUtils.isCurrentUserInRole("ADMIN"))
+            return profileRepository.findAll();
+        else if (SecurityUtils.getCurrentUserLogin().isEmpty())
+            throw new AccessDeniedException("You needs to login first");
+        else
+            return profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+
     }
 
     /**
@@ -103,7 +113,19 @@ public class ProfileResource {
     public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
         log.debug("REST request to get Profile : {}", id);
         Optional<Profile> profile = profileRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(profile);
+        if (SecurityUtils.getCurrentUserLogin().isEmpty())
+            throw new AccessDeniedException("You needs to login first");
+        if (profile.isPresent()){
+            if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+                return ResponseUtil.wrapOrNotFound(profile);
+            else {
+                if (profile.get().getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin().get()))
+                    return ResponseUtil.wrapOrNotFound(profile);
+                else
+                    throw new AccessDeniedException("You don't have the authority to do so");
+            }
+        } else
+            return ResponseUtil.wrapOrNotFound(profile);
     }
 
     /**
@@ -112,6 +134,7 @@ public class ProfileResource {
      * @param id the id of the profile to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @DeleteMapping("/profiles/{id}")
     public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {
         log.debug("REST request to delete Profile : {}", id);
