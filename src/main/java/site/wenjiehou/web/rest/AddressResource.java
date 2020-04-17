@@ -73,7 +73,6 @@ public class AddressResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/addresses")
-    @PreAuthorize("ADMIN")
     public ResponseEntity<Address> updateAddress(@Valid @RequestBody Address address) throws URISyntaxException {
         log.debug("REST request to update Address : {}", address);
         if (address.getId() == null) {
@@ -125,6 +124,7 @@ public class AddressResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/addresses/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long id) {
         log.debug("REST request to delete Address : {}", id);
         addressRepository.deleteById(id);
