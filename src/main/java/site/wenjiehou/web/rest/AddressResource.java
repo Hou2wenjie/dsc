@@ -1,8 +1,12 @@
 package site.wenjiehou.web.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import site.wenjiehou.domain.Address;
+import site.wenjiehou.domain.Profile;
 import site.wenjiehou.repository.AddressRepository;
+import site.wenjiehou.repository.ProfileRepository;
+import site.wenjiehou.security.SecurityUtils;
 import site.wenjiehou.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -19,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -40,6 +45,9 @@ public class AddressResource {
 
     private final AddressRepository addressRepository;
 
+    @Autowired
+    private  ProfileRepository profileRepository;
+
     public AddressResource(AddressRepository addressRepository) {
         this.addressRepository = addressRepository;
     }
@@ -58,6 +66,7 @@ public class AddressResource {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Address result = addressRepository.save(address);
+        profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get(0).setAddress(address);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -84,6 +93,12 @@ public class AddressResource {
             .body(result);
     }
 
+    private List<Address> ProfiletoAddress(List<Profile> plist){
+        List<Address> alist = new ArrayList<>();
+        plist.forEach(item -> {alist.add(item.getAddress());});
+        return alist;
+    }
+
     /**
      * {@code GET  /addresses} : get all the addresses.
      *
@@ -91,6 +106,8 @@ public class AddressResource {
      * @param filter the filter of the request.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of addresses in body.
      */
+
+
     @GetMapping("/addresses")
     public List<Address> getAllAddresses(@RequestParam(required = false) String filter) {
         if ("profile-is-null".equals(filter)) {
@@ -101,7 +118,10 @@ public class AddressResource {
                 .collect(Collectors.toList());
         }
         log.debug("REST request to get all Addresses");
-        return addressRepository.findAll();
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+           return addressRepository.findAll();
+        else
+            return  ProfiletoAddress(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()));
     }
 
     /**

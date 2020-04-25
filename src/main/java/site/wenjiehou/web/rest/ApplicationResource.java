@@ -1,7 +1,11 @@
 package site.wenjiehou.web.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import site.wenjiehou.domain.Application;
+import site.wenjiehou.domain.Profile;
 import site.wenjiehou.repository.ApplicationRepository;
+import site.wenjiehou.repository.ProfileRepository;
+import site.wenjiehou.security.SecurityUtils;
 import site.wenjiehou.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -34,6 +38,8 @@ public class ApplicationResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Autowired
+    private ProfileRepository profileRepository;
     private final ApplicationRepository applicationRepository;
 
     public ApplicationResource(ApplicationRepository applicationRepository) {
@@ -53,6 +59,7 @@ public class ApplicationResource {
         if (application.getId() != null) {
             throw new BadRequestAlertException("A new application cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        application.setProfile(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get(0));
         Application result = applicationRepository.save(application);
         return ResponseEntity.created(new URI("/api/applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -89,7 +96,10 @@ public class ApplicationResource {
     @GetMapping("/applications")
     public List<Application> getAllApplications() {
         log.debug("REST request to get all Applications");
-        return applicationRepository.findAll();
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+            return applicationRepository.findAll();
+        else
+            return  applicationRepository.getByProfileUserLogin(SecurityUtils.getCurrentUserLogin().get());
     }
 
     /**

@@ -1,10 +1,12 @@
 package site.wenjiehou.web.rest;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import site.wenjiehou.domain.Profile;
 import site.wenjiehou.repository.ProfileRepository;
+import site.wenjiehou.repository.UserRepository;
 import site.wenjiehou.security.SecurityUtils;
 import site.wenjiehou.web.rest.errors.BadRequestAlertException;
 
@@ -39,6 +41,9 @@ public class ProfileResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    @Autowired
+    private UserRepository userRepository;
+
     private final ProfileRepository profileRepository;
 
     public ProfileResource(ProfileRepository profileRepository) {
@@ -58,10 +63,19 @@ public class ProfileResource {
         if (profile.getId() != null) {
             throw new BadRequestAlertException("A new profile cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Profile result = profileRepository.save(profile);
-        return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        if (SecurityUtils.isCurrentUserInRole("ROLE_Admin")){
+            Profile result = profileRepository.save(profile);
+            return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        }else{
+            profile.setUser(userRepository.getByLogin(SecurityUtils.getCurrentUserLogin().get()).get(0));
+            Profile result = profileRepository.save(profile);
+            return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .body(result);
+        }
+
     }
 
     /**
@@ -94,7 +108,7 @@ public class ProfileResource {
     @GetMapping("/profiles")
     public List<Profile> getAllProfiles() {
         log.debug("REST request to get all Profiles");
-        if (SecurityUtils.isCurrentUserInRole("ADMIN"))
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
             return profileRepository.findAll();
         else if (SecurityUtils.getCurrentUserLogin().isEmpty())
             throw new AccessDeniedException("You needs to login first");

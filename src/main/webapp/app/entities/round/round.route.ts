@@ -69,5 +69,9 @@ export const roundRoute: Routes = [
       pageTitle: 'Rounds'
     },
     canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/apply',
+    component: Roun
   }
 ];

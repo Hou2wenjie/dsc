@@ -18,20 +18,20 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
+            <!--<th scope="col" ><span>ID</span></th>-->
             <th scope="col" ><span>Name</span></th>
             <th scope="col" ><span>Gender</span></th>
             <th scope="col" ><span>Age</span></th>
             <th scope="col" ><span>Phone Nr</span></th>
             <th scope="col" ><span>Reseme</span></th>
-            <th scope="col" ><span>User</span></th>
-            <th scope="col" ><span>Address</span></th>
+            <!--<th scope="col" ><span>User</span></th>
+            <th scope="col" ><span>Address</span></th>-->
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let profile of profiles ;trackBy: trackId">
-                <td><a [routerLink]="['/profile', profile.id, 'view' ]">{{profile.id}}</a></td>
+                <!--<td><a [routerLink]="['/profile', profile.id, 'view' ]">{{profile.id}}</a></td>-->
                 <td>{{profile.name}}</td>
                 <td>{{profile.gender}}</td>
                 <td>{{profile.age}}</td>
@@ -40,14 +40,14 @@
                     <a *ngIf="profile.reseme" (click)="openFile(profile.resemeContentType, profile.reseme)">open</a>
                     <span *ngIf="profile.reseme">{{profile.resemeContentType}}, {{byteSize(profile.reseme)}}</span>
                 </td>
-                <td>
+                <!--<td>
                     {{profile.user?.id}}
                 </td>
                 <td>
                     <div *ngIf="profile.address">
                         <a [routerLink]="['/address', profile.address?.id, 'view' ]" >{{profile.address?.id}}</a>
                     </div>
-                </td>
+                </td>-->
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

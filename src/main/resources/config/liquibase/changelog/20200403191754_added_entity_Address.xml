@@ -36,6 +36,9 @@
             <column name="additional" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="profile_id" type = "bigint">
+                <constraints nullable="false"/>
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>

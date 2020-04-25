@@ -11,7 +11,6 @@ import { Account } from 'app/core/user/account.model';
 export class SettingsComponent implements OnInit {
   error: string;
   success: string;
-  account: Account;
   settingsForm = this.fb.group({
     firstName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
     lastName: [undefined, [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],

@@ -18,26 +18,26 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-            <th scope="col" ><span>ID</span></th>
+            <!--<th scope="col" ><span>ID</span></th>-->
             <th scope="col" ><span>State</span></th>
             <th scope="col" ><span>End</span></th>
             <th scope="col" ><span>Last Changed</span></th>
-            <th scope="col" ><span>Profile</span></th>
+            <!--<th scope="col" ><span>Profile</span></th>-->
             <th scope="col" ><span>Round</span></th>
             <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let application of applications ;trackBy: trackId">
-                <td><a [routerLink]="['/application', application.id, 'view' ]">{{application.id}}</a></td>
+                <!--<td><a [routerLink]="['/application', application.id, 'view' ]">{{application.id}}</a></td>-->
                 <td>{{application.state}}</td>
                 <td>{{application.end | date:'mediumDate'}}</td>
                 <td>{{application.lastChanged | date:'mediumDate'}}</td>
-                <td>
+                <!--<td>
                     <div *ngIf="application.profile">
                         <a [routerLink]="['/profile', application.profile?.id, 'view' ]" >{{application.profile?.id}}</a>
                     </div>
-                </td>
+                </td>-->
                 <td>
                     <div *ngIf="application.round">
                         <a [routerLink]="['/round', application.round?.id, 'view' ]" >{{application.round?.id}}</a>
