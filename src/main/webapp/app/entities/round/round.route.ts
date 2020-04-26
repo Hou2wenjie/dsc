@@ -10,6 +10,7 @@ import { RoundComponent } from './round.component';
 import { RoundDetailComponent } from './round-detail.component';
 import { RoundUpdateComponent } from './round-update.component';
 import { IRound } from 'app/shared/model/round.model';
+import { RoundApplyDialogComponent } from 'app/entities/round/round-apply-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class RoundResolve implements Resolve<IRound> {
@@ -72,6 +73,6 @@ export const roundRoute: Routes = [
   },
   {
     path: ':id/apply',
-    component: Roun
+    component: RoundApplyDialogComponent
   }
 ];
