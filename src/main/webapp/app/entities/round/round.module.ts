@@ -12,6 +12,6 @@ import { roundRoute } from './round.route';
 @NgModule({
   imports: [DscSharedModule, RouterModule.forChild(roundRoute)],
   declarations: [RoundComponent, RoundDetailComponent, RoundUpdateComponent, RoundDeleteDialogComponent, RoundApplyDialogComponent],
-  entryComponents: [RoundDeleteDialogComponent]
+  entryComponents: [RoundDeleteDialogComponent, RoundApplyDialogComponent]
 })
 export class DscRoundModule {}

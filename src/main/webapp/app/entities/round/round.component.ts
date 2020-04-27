@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IRound } from 'app/shared/model/round.model';
 import { RoundService } from './round.service';
 import { RoundDeleteDialogComponent } from './round-delete-dialog.component';
+import { RoundApplyDialogComponent } from 'app/entities/round/round-apply-dialog.component';
 
 @Component({
   selector: 'jhi-round',
@@ -43,6 +44,10 @@ export class RoundComponent implements OnInit, OnDestroy {
 
   delete(round: IRound) {
     const modalRef = this.modalService.open(RoundDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.round = round;
+  }
+  apply(round: IRound) {
+    const modalRef = this.modalService.open(RoundApplyDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.round = round;
   }
 }

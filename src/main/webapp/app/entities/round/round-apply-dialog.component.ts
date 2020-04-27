@@ -4,18 +4,31 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { IRound } from 'app/shared/model/round.model';
 import { RoundService } from './round.service';
+import { ProfileService } from 'app/entities/profile/profile.service';
 import { ApplicationService } from 'app/entities/application/application.service';
 import { Application, IApplication } from 'app/shared/model/application.model';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { IProfile } from 'app/shared/model/profile.model';
+import * as moment from 'moment';
+import { State } from 'app/shared/model/enumerations/state.model';
 
 @Component({
   templateUrl: './round-apply-dialog.component.html'
 })
 export class RoundApplyDialogComponent {
+  editForm = this.fb.group({
+    id: [],
+    state: [],
+    end: [],
+    lastChanged: [],
+    profile: [],
+    round: []
+  });
   round: IRound;
   isSaving: Boolean;
+  roundService: RoundService;
   constructor(
     protected applicationService: ApplicationService,
     public activeModal: NgbActiveModal,
@@ -26,9 +39,16 @@ export class RoundApplyDialogComponent {
   clear() {
     this.activeModal.dismiss('cancel');
   }
-
+  broadcast(s: String) {
+    this.eventManager.broadcast({
+      name: 'roundListModification',
+      content: s
+    });
+  }
   confirmApply(id: number) {
-    const application = this.createFromForm(1, 1);
+    //this.broadcast('sss');
+    this.getRound(id);
+    const application = this.createFromForm();
     if (application.id !== undefined) {
       this.subscribeToSaveResponse(this.applicationService.update(application));
     } else {
@@ -38,35 +58,31 @@ export class RoundApplyDialogComponent {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IApplication>>) {
     result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
   }
-  previousState() {
-    window.history.back();
-  }
   protected onSaveSuccess() {
     this.isSaving = false;
-    this.previousState();
+    this.clear();
   }
 
   protected onSaveError() {
     this.isSaving = false;
   }
-  editForm = this.fb.group({
-    id: [],
-    state: [],
-    end: [],
-    lastChanged: [],
-    profile: [],
-    round: []
-  });
-
-  private createFromForm(roundID: number, profileID: number): IApplication {
+  private getRound(roundID: number) {
+    this.roundService.find(roundID).subscribe(
+      (res: HttpResponse<IRound>) => {
+        this.round = res.body;
+      },
+      () => this.onSaveError()
+    );
+  }
+  private createFromForm() {
     return {
       ...new Application(),
-      id: this.editForm.get(['id']).value,
-      state: this.editForm.get(['state']).value,
-      end: this.editForm.get(['end']).value,
-      lastChanged: this.editForm.get(['lastChanged']).value,
-      profile: this.editForm.get(['profile']).value,
-      round: this.editForm.get(['round']).value
+      id: undefined,
+      state: State.CREATED,
+      end: this.round.endTime,
+      lastChanged: moment(),
+      profile: null,
+      round: this.round
     };
   }
 }

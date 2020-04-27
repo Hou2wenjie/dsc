@@ -73,6 +73,9 @@ export const roundRoute: Routes = [
   },
   {
     path: ':id/apply',
-    component: RoundApplyDialogComponent
+    component: RoundApplyDialogComponent,
+    resolve: {
+      round: RoundResolve
+    }
   }
 ];
