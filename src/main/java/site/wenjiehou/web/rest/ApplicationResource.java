@@ -129,4 +129,10 @@ public class ApplicationResource {
         applicationRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping(value = "/applications", params = "roundId")
+    public List<Application> getAllByRoundId(@RequestParam Long roundId) {
+        log.debug("REST request to get Application with Round Id : {}", roundId);
+        return applicationRepository.getAllByRoundId(roundId);
+    }
 }

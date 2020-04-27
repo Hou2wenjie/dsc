@@ -35,5 +35,53 @@
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span> Edit</span>
             </button>
         </div>
+        <div class="table-responsive" *ngIf="profiles?.length > 0 && accountService.hasAnyAuthority('ROLE_ADMIN')">
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                <tr>
+                    <!--<th scope="col" ><span>ID</span></th>-->
+                    <th scope="col" ><span>Name</span></th>
+                    <th scope="col" ><span>Gender</span></th>
+                    <th scope="col" ><span>Age</span></th>
+                    <th scope="col" ><span>Phone Nr</span></th>
+                    <th scope="col" ><span>Reseme</span></th>
+                    <th scope="col" ><span>Current State</span></th>
+                    <!--<th scope="col" ><span>User</span></th>
+                    <th scope="col" ><span>Address</span></th>-->
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let profile of profiles ;trackBy: trackId">
+                    <!--<td><a [routerLink]="['/profile', profile.id, 'view' ]">{{profile.id}}</a></td>-->
+                    <td>{{profile.name}}</td>
+                    <td>{{profile.gender}}</td>
+                    <td>{{profile.age}}</td>
+                    <td>{{profile.phoneNr}}</td>
+                    <td>
+                        <a *ngIf="profile.reseme" (click)="openFile(profile.resemeContentType, profile.reseme)">open</a>
+                        <span *ngIf="profile.reseme">{{profile.resemeContentType}}, {{byteSize(profile.reseme)}}</span>
+                    </td>
+                    <td>{{findApplicationFromProfile(profile).state}}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/profile', profile.id, 'view' ]"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon [icon]="'eye'"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+                            <button type="submit"
+                                    (click)="enrollApplication(profile)"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                                <span class="d-none d-md-inline">Enroll</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

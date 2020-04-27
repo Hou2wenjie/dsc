@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { IApplication } from 'app/shared/model/application.model';
+import { Application, IApplication } from 'app/shared/model/application.model';
 
 type EntityResponseType = HttpResponse<IApplication>;
 type EntityArrayResponseType = HttpResponse<IApplication[]>;
@@ -74,5 +74,10 @@ export class ApplicationService {
       });
     }
     return res;
+  }
+
+  getAllByRoundId(roundId: number): Observable<HttpResponse<Application[]>> {
+    const param = createRequestOption({ roundId });
+    return this.http.get<Application[]>(this.resourceUrl, { observe: 'response', params: param });
   }
 }
