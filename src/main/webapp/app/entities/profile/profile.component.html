@@ -62,7 +62,7 @@
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline">Edit</span>
                         </button>
-                        <button type="submit" (click)="delete(profile)"
+                        <button *ngIf="accountService.hasAnyAuthority('ROLE_ADMIN')" type="submit" (click)="delete(profile)"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline">Delete</span>

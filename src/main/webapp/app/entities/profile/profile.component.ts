@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProfile } from 'app/shared/model/profile.model';
 import { ProfileService } from './profile.service';
 import { ProfileDeleteDialogComponent } from './profile-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-profile',
@@ -20,7 +21,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
     protected profileService: ProfileService,
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService
   ) {}
 
   loadAll() {
