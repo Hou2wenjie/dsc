@@ -66,7 +66,7 @@ public class AddressResource {
             throw new BadRequestAlertException("A new address cannot already have an ID", ENTITY_NAME, "idexists");
         }
         Address result = addressRepository.save(address);
-        profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get(0).setAddress(address);
+        profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get().setAddress(address);
         return ResponseEntity.created(new URI("/api/addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -121,7 +121,7 @@ public class AddressResource {
         if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
            return addressRepository.findAll();
         else
-            return  ProfiletoAddress(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()));
+            return  ProfiletoAddress(List.of(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get()));
     }
 
     /**
