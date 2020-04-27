@@ -1,0 +1,10 @@
+<section id="{{section.id}}" class="{{section.class}}">
+    <div class="inner">
+        <!-- <a href="#" class="image"><img src="images/pic03.jpg" alt="" /></a> -->
+        <div class="content">
+            <h2 class="major">{{section.title}}</h2>
+            <p *ngFor="let p of section.content">{{p}}</p>
+            <a class="special" *ngIf="section.link">{{section.link}}</a>
+        </div>
+    </div>
+</section>
