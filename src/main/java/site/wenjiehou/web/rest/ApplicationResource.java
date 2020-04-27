@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -59,7 +59,7 @@ public class ApplicationResource {
         if (application.getId() != null) {
             throw new BadRequestAlertException("A new application cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        application.setProfile(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get(0));
+        application.setProfile(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get());
         Application result = applicationRepository.save(application);
         return ResponseEntity.created(new URI("/api/applications/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))

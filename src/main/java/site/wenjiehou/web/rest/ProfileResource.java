@@ -63,7 +63,7 @@ public class ProfileResource {
         if (profile.getId() != null) {
             throw new BadRequestAlertException("A new profile cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        if (SecurityUtils.isCurrentUserInRole("ROLE_Admin")){
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")){
             Profile result = profileRepository.save(profile);
             return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
@@ -113,7 +113,7 @@ public class ProfileResource {
         else if (SecurityUtils.getCurrentUserLogin().isEmpty())
             throw new AccessDeniedException("You needs to login first");
         else
-            return profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get());
+            return List.of(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get());
 
     }
 

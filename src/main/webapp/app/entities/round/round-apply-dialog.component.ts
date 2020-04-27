@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
@@ -17,7 +17,7 @@ import { State } from 'app/shared/model/enumerations/state.model';
 @Component({
   templateUrl: './round-apply-dialog.component.html'
 })
-export class RoundApplyDialogComponent {
+export class RoundApplyDialogComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     state: [],
@@ -28,13 +28,16 @@ export class RoundApplyDialogComponent {
   });
   round: IRound;
   isSaving: Boolean;
-  roundService: RoundService;
+
   constructor(
     protected applicationService: ApplicationService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
+    private roundService: RoundService,
     private fb: FormBuilder
   ) {}
+
+  ngOnInit(): void {}
 
   clear() {
     this.activeModal.dismiss('cancel');
