@@ -1,6 +1,7 @@
 package site.wenjiehou.web.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import site.wenjiehou.domain.Application;
 import site.wenjiehou.domain.Profile;
 import site.wenjiehou.repository.ApplicationRepository;
@@ -75,6 +76,7 @@ public class ApplicationResource {
      * or with status {@code 500 (Internal Server Error)} if the application couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PutMapping("/applications")
     public ResponseEntity<Application> updateApplication(@RequestBody Application application) throws URISyntaxException {
         log.debug("REST request to update Application : {}", application);

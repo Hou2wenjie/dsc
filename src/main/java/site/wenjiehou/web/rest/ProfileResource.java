@@ -54,66 +54,76 @@ public class ProfileResource {
      * {@code POST  /profiles} : Create a new profile.
      *
      * @param profile the profile to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new profile, or with status {@code 400 (Bad Request)} if the profile has already an ID.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new
+     * profile, or with status {@code 400 (Bad Request)} if the profile has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/profiles")
-    public ResponseEntity<Profile> createProfile(@Valid @RequestBody Profile profile) throws URISyntaxException {
+    public ResponseEntity<Profile> createProfile(@Valid @RequestBody Profile profile)
+        throws URISyntaxException {
         log.debug("REST request to save Profile : {}", profile);
         if (profile.getId() != null) {
-            throw new BadRequestAlertException("A new profile cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new profile cannot already have an ID",
+                ENTITY_NAME, "idexists");
         }
-        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")){
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
             Profile result = profileRepository.save(profile);
             return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                    result.getId().toString()))
                 .body(result);
-        }else{
-            profile.setUser(userRepository.getByLogin(SecurityUtils.getCurrentUserLogin().get()).get(0));
+        } else {
+            profile.setUser(
+                userRepository.getByLogin(SecurityUtils.getCurrentUserLogin().get()).get(0));
             Profile result = profileRepository.save(profile);
             return ResponseEntity.created(new URI("/api/profiles/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+                .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME,
+                    result.getId().toString()))
                 .body(result);
         }
-
     }
 
     /**
      * {@code PUT  /profiles} : Updates an existing profile.
      *
      * @param profile the profile to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated profile,
-     * or with status {@code 400 (Bad Request)} if the profile is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the profile couldn't be updated.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated
+     * profile, or with status {@code 400 (Bad Request)} if the profile is not valid, or with status
+     * {@code 500 (Internal Server Error)} if the profile couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/profiles")
-    public ResponseEntity<Profile> updateProfile(@Valid @RequestBody Profile profile) throws URISyntaxException {
+    public ResponseEntity<Profile> updateProfile(@Valid @RequestBody Profile profile)
+        throws URISyntaxException {
         log.debug("REST request to update Profile : {}", profile);
         if (profile.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         Profile result = profileRepository.save(profile);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, profile.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME,
+                profile.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code GET  /profiles} : get all the profiles.
      *
-
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of profiles in body.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of profiles in
+     * body.
      */
     @GetMapping("/profiles")
     public List<Profile> getAllProfiles() {
         log.debug("REST request to get all Profiles");
-        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+        if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
             return profileRepository.findAll();
-        else if (SecurityUtils.getCurrentUserLogin().isEmpty())
+        } else if (SecurityUtils.getCurrentUserLogin().isEmpty()) {
             throw new AccessDeniedException("You needs to login first");
-        else
-            return List.of(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get()).get());
+        } else {
+            return List
+                .of(profileRepository.getByUserLogin(SecurityUtils.getCurrentUserLogin().get())
+                    .get());
+        }
 
     }
 
@@ -121,25 +131,30 @@ public class ProfileResource {
      * {@code GET  /profiles/:id} : get the "id" profile.
      *
      * @param id the id of the profile to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the profile, or with status {@code 404 (Not Found)}.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the profile, or
+     * with status {@code 404 (Not Found)}.
      */
     @GetMapping("/profiles/{id}")
     public ResponseEntity<Profile> getProfile(@PathVariable Long id) {
         log.debug("REST request to get Profile : {}", id);
         Optional<Profile> profile = profileRepository.findById(id);
-        if (SecurityUtils.getCurrentUserLogin().isEmpty())
+        if (SecurityUtils.getCurrentUserLogin().isEmpty()) {
             throw new AccessDeniedException("You needs to login first");
-        if (profile.isPresent()){
-            if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN"))
+        }
+        if (profile.isPresent()) {
+            if (SecurityUtils.isCurrentUserInRole("ROLE_ADMIN")) {
                 return ResponseUtil.wrapOrNotFound(profile);
-            else {
-                if (profile.get().getUser().getLogin().equals(SecurityUtils.getCurrentUserLogin().get()))
+            } else {
+                if (profile.get().getUser().getLogin()
+                    .equals(SecurityUtils.getCurrentUserLogin().get())) {
                     return ResponseUtil.wrapOrNotFound(profile);
-                else
+                } else {
                     throw new AccessDeniedException("You don't have the authority to do so");
+                }
             }
-        } else
+        } else {
             return ResponseUtil.wrapOrNotFound(profile);
+        }
     }
 
     /**
@@ -153,6 +168,7 @@ public class ProfileResource {
     public ResponseEntity<Void> deleteProfile(@PathVariable Long id) {
         log.debug("REST request to delete Profile : {}", id);
         profileRepository.deleteById(id);
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
+        return ResponseEntity.noContent().headers(HeaderUtil
+            .createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

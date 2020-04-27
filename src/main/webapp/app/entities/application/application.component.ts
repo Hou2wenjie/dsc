@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IApplication } from 'app/shared/model/application.model';
 import { ApplicationService } from './application.service';
 import { ApplicationDeleteDialogComponent } from './application-delete-dialog.component';
+import { AccountService } from 'app/core/auth/account.service';
 
 @Component({
   selector: 'jhi-application',
@@ -19,7 +20,8 @@ export class ApplicationComponent implements OnInit, OnDestroy {
   constructor(
     protected applicationService: ApplicationService,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected accountService: AccountService
   ) {}
 
   loadAll() {
