@@ -58,4 +58,7 @@ export class RoundComponent implements OnInit, OnDestroy {
   hasOnlyUserAccess() {
     return this.accountService.hasAnyAuthority('ROLE_USER') && !this.accountService.hasAnyAuthority('ROLE_ADMIN');
   }
+  hasAdminAccess() {
+    return this.accountService.hasAnyAuthority('ROLE_ADMIN');
+  }
 }

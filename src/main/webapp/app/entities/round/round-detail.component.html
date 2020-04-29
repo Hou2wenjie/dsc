@@ -78,6 +78,12 @@
                                 <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                 <span class="d-none d-md-inline">Enroll</span>
                             </button>
+                            <button type="submit"
+                                    (click)="denyApplication(profile,round)"
+                                    class="btn btn-warning btn-sm">
+                                <fa-icon [icon]="'ban'"></fa-icon>
+                                <span class="d-none d-md-inline">Denied</span>
+                            </button>
                         </div>
                     </td>
                 </tr>

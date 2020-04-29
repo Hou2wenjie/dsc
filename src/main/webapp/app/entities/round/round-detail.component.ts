@@ -76,4 +76,18 @@ export class RoundDetailComponent implements OnInit {
       .subscribe(() => this.jhiAlertService.success('successful!'), () => this.jhiAlertService.error('error!'));
     this.isSaving = false;
   }
+  denyApplication(profile: IProfile, round: IRound) {
+    this.isSaving = true;
+    const application = this.applications.filter(app => app.profile.id === profile.id && app.round.id === round.id)[0];
+    if (application.state === State.DENIED) {
+      alert('you have already denied this application.');
+      //console.log(`You have already approved this applicant with id ${application.id}`);
+      return;
+    }
+    application.state = State.DENIED;
+    this.applicationService
+      .update(application)
+      .subscribe(() => this.jhiAlertService.success('successful!'), () => this.jhiAlertService.error('error!'));
+    this.isSaving = false;
+  }
 }
