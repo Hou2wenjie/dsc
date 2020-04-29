@@ -76,8 +76,10 @@ export class ApplicationService {
     return res;
   }
 
-  getAllByRoundId(roundId: number): Observable<HttpResponse<Application[]>> {
-    const param = createRequestOption({ roundId });
-    return this.http.get<Application[]>(this.resourceUrl, { observe: 'response', params: param });
+  getAllByRoundId(roundId: number): Observable<HttpResponse<IApplication[]>> {
+    const options = createRequestOption({ roundId });
+    return this.http
+      .get<IApplication[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 }

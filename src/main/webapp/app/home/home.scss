@@ -235,7 +235,7 @@ textarea {
   }
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 3000px) {
   body,
   input,
   select,
@@ -978,7 +978,7 @@ hr.major {
   }
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 3000px) {
   .row {
     display: flex;
     flex-wrap: wrap;
@@ -3553,7 +3553,7 @@ body.is-menu-visible #menu .inner {
   text-transform: uppercase;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 3000px) {
   #banner {
     padding: 7em 0 8.25em 0;
     background-color: #2e3141;
@@ -3657,7 +3657,7 @@ body.is-preload #banner p {
   text-transform: uppercase;
 }
 
-@media screen and (max-width: 1280px) {
+@media screen and (max-width: 3000px) {
   #wrapper > header {
     padding: 9em 0 6.25em 0;
     background-color: #2e3141;

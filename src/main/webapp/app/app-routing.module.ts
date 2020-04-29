@@ -14,7 +14,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
       [
         {
           path: '',
-          redirectTo: 'login',
+          redirectTo: 'home',
           pathMatch: 'full'
         },
         {

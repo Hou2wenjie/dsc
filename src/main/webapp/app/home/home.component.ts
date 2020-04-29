@@ -7,6 +7,7 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { Section } from 'app/home/components/section/section.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-home',
@@ -98,6 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         'In order to participate you are supposed to be a resident in China with valid ID and a Passport, besides that, a transcript of a healthy statment from a 3A hospital is needed in English. Are you ready for this journey? click here to start the application!'
       ],
       link: 'Apply here',
+      linkTo: '/login',
       id: 'five',
       class: 'wrapper style5'
     },
@@ -116,7 +118,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   constructor(
     private accountService: AccountService,
     private loginModalService: LoginModalService,
-    private eventManager: JhiEventManager
+    private eventManager: JhiEventManager,
+    private router: Router
   ) {}
 
   ngOnInit() {
