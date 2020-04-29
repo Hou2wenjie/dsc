@@ -12,13 +12,15 @@
                                  baseTableName="application"
                                  constraintName="fk_application_profile_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="profile"/>
+                                 referencedTableName="profile"
+                                 />
 
         <addForeignKeyConstraint baseColumnNames="round_id"
                                  baseTableName="application"
                                  constraintName="fk_application_round_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="round"/>
+                                 referencedTableName="round"
+                                 />
 
     </changeSet>
 </databaseChangeLog>

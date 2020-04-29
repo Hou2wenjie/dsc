@@ -29,9 +29,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
  */
 @Service
 public class MailService {
-    private static final String Username = "hello.zhouhongkuan@gmail.com";
+    private static final String Username = "nomore404team@gmail.com";
 
-    private static final String Password = "zhkshizhu123456";
+    private static final String Password = "houzhouwangpan";
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
