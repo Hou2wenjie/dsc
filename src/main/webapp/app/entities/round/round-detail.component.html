@@ -1,5 +1,6 @@
 <div class="row justify-content-center">
     <div class="col-8">
+        <jhi-alert-error></jhi-alert-error>
         <div *ngIf="round">
             <h2><span>Round</span> {{round.id}}</h2>
             <hr>
@@ -62,7 +63,7 @@
                         <a *ngIf="profile.reseme" (click)="openFile(profile.resemeContentType, profile.reseme)">open</a>
                         <span *ngIf="profile.reseme">{{profile.resemeContentType}}, {{byteSize(profile.reseme)}}</span>
                     </td>
-                    <td>{{findApplicationFromProfile(profile).state}}</td>
+                    <td>{{findApplicationFromProfile(profile, round).state}}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
@@ -72,7 +73,7 @@
                                 <span class="d-none d-md-inline">View</span>
                             </button>
                             <button type="submit"
-                                    (click)="enrollApplication(profile)"
+                                    (click)="enrollApplication(profile,round)"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon [icon]="'pencil-alt'"></fa-icon>
                                 <span class="d-none d-md-inline">Enroll</span>

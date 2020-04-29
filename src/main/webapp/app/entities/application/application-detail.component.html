@@ -20,7 +20,7 @@
                 <dt><span>Profile</span></dt>
                 <dd>
                     <div *ngIf="application.profile">
-                        <a [routerLink]="['/profile', application.profile?.id, 'view']">{{application.profile?.id}}</a>
+                        <a [routerLink]="['/profile', application.profile?.id, 'view']">{{application.profile?.name}}</a>
                     </div>
                 </dd>
                 <dt><span>Round</span></dt>

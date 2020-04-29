@@ -1,7 +1,7 @@
 <div>
     <h2 id="page-heading">
         <span>Profiles</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-profile" [routerLink]="['/profile/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-profile" [hidden] = "profiles?.length !== 0" [routerLink]="['/profile/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
             <span >
             Create a new Profile

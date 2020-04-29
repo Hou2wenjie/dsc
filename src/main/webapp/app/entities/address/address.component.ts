@@ -6,7 +6,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IAddress } from 'app/shared/model/address.model';
 import { AddressService } from './address.service';
 import { AddressDeleteDialogComponent } from './address-delete-dialog.component';
-
+import { AccountService } from 'app/core/auth/account.service';
 @Component({
   selector: 'jhi-address',
   templateUrl: './address.component.html'
@@ -15,7 +15,12 @@ export class AddressComponent implements OnInit, OnDestroy {
   addresses: IAddress[];
   eventSubscriber: Subscription;
 
-  constructor(protected addressService: AddressService, protected eventManager: JhiEventManager, protected modalService: NgbModal) {}
+  constructor(
+    protected accountService: AccountService,
+    protected addressService: AddressService,
+    protected eventManager: JhiEventManager,
+    protected modalService: NgbModal
+  ) {}
 
   loadPersionalInfo() {
     //this.addressService.find(id)
@@ -47,5 +52,8 @@ export class AddressComponent implements OnInit, OnDestroy {
   delete(address: IAddress) {
     const modalRef = this.modalService.open(AddressDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.address = address;
+  }
+  hasOnlyUserAccess() {
+    return this.accountService.hasAnyAuthority('ROLE_USER') && !this.accountService.hasAnyAuthority('ROLE_ADMIN');
   }
 }

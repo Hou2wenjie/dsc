@@ -66,7 +66,7 @@ export const roundRoute: Routes = [
       round: RoundResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_ADMIN'],
       pageTitle: 'Rounds'
     },
     canActivate: [UserRouteAccessService]
