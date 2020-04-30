@@ -8,10 +8,18 @@ import { RoundUpdateComponent } from './round-update.component';
 import { RoundApplyDialogComponent } from './round-apply-dialog.component';
 import { RoundDeleteDialogComponent } from './round-delete-dialog.component';
 import { roundRoute } from './round.route';
+import { ApplicationDeleteDialogComponent } from 'app/entities/application/application-delete-dialog.component';
 
 @NgModule({
   imports: [DscSharedModule, RouterModule.forChild(roundRoute)],
-  declarations: [RoundComponent, RoundDetailComponent, RoundUpdateComponent, RoundDeleteDialogComponent, RoundApplyDialogComponent],
-  entryComponents: [RoundDeleteDialogComponent, RoundApplyDialogComponent]
+  declarations: [
+    RoundComponent,
+    RoundDetailComponent,
+    RoundUpdateComponent,
+    RoundDeleteDialogComponent,
+    RoundApplyDialogComponent,
+    ApplicationDeleteDialogComponent
+  ],
+  entryComponents: [RoundDeleteDialogComponent, RoundApplyDialogComponent, ApplicationDeleteDialogComponent]
 })
 export class DscRoundModule {}

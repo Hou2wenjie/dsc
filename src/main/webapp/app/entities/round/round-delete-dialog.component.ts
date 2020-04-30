@@ -19,12 +19,15 @@ export class RoundDeleteDialogComponent {
   }
 
   confirmDelete(id: number) {
-    this.roundService.delete(id).subscribe(() => {
-      this.eventManager.broadcast({
-        name: 'roundListModification',
-        content: 'Deleted an round'
-      });
-      this.activeModal.dismiss(true);
-    });
+    this.roundService.delete(id).subscribe(
+      () => {
+        this.eventManager.broadcast({
+          name: 'roundListModification',
+          content: 'Deleted an round'
+        });
+        this.activeModal.dismiss(true);
+      },
+      () => alert('you need to delete all applications in this round.(Or set cascade)')
+    );
   }
 }

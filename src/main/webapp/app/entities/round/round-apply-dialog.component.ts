@@ -10,10 +10,10 @@ import { Application, IApplication } from 'app/shared/model/application.model';
 import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { IProfile } from 'app/shared/model/profile.model';
 import * as moment from 'moment';
 import { State } from 'app/shared/model/enumerations/state.model';
 import { AccountService } from 'app/core/auth/account.service';
+import { IProfile } from 'app/shared/model/profile.model';
 
 @Component({
   templateUrl: './round-apply-dialog.component.html'
@@ -29,16 +29,23 @@ export class RoundApplyDialogComponent implements OnInit {
   });
   round: IRound;
   isSaving: Boolean;
-
+  applications: IApplication[];
+  profile: IProfile;
+  num: number;
   constructor(
     protected applicationService: ApplicationService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private roundService: RoundService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    protected profileService: ProfileService
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.profileService.query().subscribe(res => {
+      this.profile = res.body[0];
+    });
+  }
 
   clear() {
     this.activeModal.dismiss('cancel');
@@ -50,14 +57,29 @@ export class RoundApplyDialogComponent implements OnInit {
     });
   }
   confirmApply(id: number) {
-    //this.broadcast('sss');
     this.getRound(id);
     const application = this.createFromForm();
-    if (application.id !== undefined) {
-      this.subscribeToSaveResponse(this.applicationService.update(application));
-    } else {
-      this.subscribeToSaveResponse(this.applicationService.create(application));
-    }
+    this.applicationService.getAllByRoundId(id).subscribe(
+      res => {
+        this.applications = res.body;
+        if (this.round.maxCap <= this.applications.length) {
+          alert('It is full!');
+          this.clear();
+          return;
+        }
+        if (this.applications.map(resx => resx.profile.id).includes(this.profile.id)) {
+          alert('you have already applied!');
+          this.clear();
+          return;
+        }
+        if (application.id !== undefined) {
+          this.subscribeToSaveResponse(this.applicationService.update(application));
+        } else {
+          this.subscribeToSaveResponse(this.applicationService.create(application));
+        }
+      },
+      () => alert('something badly happened!')
+    );
   }
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IApplication>>) {
     result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
@@ -68,6 +90,7 @@ export class RoundApplyDialogComponent implements OnInit {
   }
 
   protected onSaveError() {
+    alert('can not create application(check your profile or something else!)');
     this.isSaving = false;
   }
   private getRound(roundID: number) {
@@ -85,7 +108,7 @@ export class RoundApplyDialogComponent implements OnInit {
       state: State.CREATED,
       end: this.round.endTime,
       lastChanged: moment(),
-      profile: null,
+      profile: this.profile,
       round: this.round
     };
   }

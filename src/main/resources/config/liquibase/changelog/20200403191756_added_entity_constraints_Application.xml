@@ -13,14 +13,14 @@
                                  constraintName="fk_application_profile_id"
                                  referencedColumnNames="id"
                                  referencedTableName="profile"
-                                 />
+                                 onDelete="CASCADE"/>
 
         <addForeignKeyConstraint baseColumnNames="round_id"
                                  baseTableName="application"
                                  constraintName="fk_application_round_id"
                                  referencedColumnNames="id"
                                  referencedTableName="round"
-                                 />
+                                 onDelete="CASCADE"/>
 
     </changeSet>
 </databaseChangeLog>

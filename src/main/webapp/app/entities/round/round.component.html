@@ -32,7 +32,11 @@
                 <td>{{round.startTime | date:'mediumDate'}}</td>
                 <td>{{round.endTime | date:'mediumDate'}}</td>
                 <td>{{round.maxCap}}</td>
-                <td>{{round.currentCap}}</td>
+                <td>
+                    <div>
+                        <a [routerLink]="['/round', round.id, 'view' ]" >see in this detail</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

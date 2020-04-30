@@ -9,6 +9,8 @@ import { State } from 'app/shared/model/enumerations/state.model';
 import { JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { IProfile } from 'app/shared/model/profile.model';
 import { isSameTotalToScroll } from 'ngx-infinite-scroll/src/services/scroll-resolver';
+import { ApplicationDeleteDialogComponent } from 'app/entities/application/application-delete-dialog.component';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-round-detail',
@@ -19,16 +21,19 @@ export class RoundDetailComponent implements OnInit {
   applications: IApplication[];
   profiles: IProfile[];
   isSaving: boolean;
+  isDeleting: boolean;
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected accountService: AccountService,
     protected applicationService: ApplicationService,
     protected dataUtils: JhiDataUtils,
-    protected jhiAlertService: JhiAlertService
+    protected jhiAlertService: JhiAlertService,
+    protected modalService: NgbModal
   ) {}
 
   ngOnInit() {
     this.isSaving = false;
+    this.isDeleting = false;
     this.activatedRoute.data.subscribe(({ round }) => {
       this.round = round;
       this.applicationService.getAllByRoundId(this.round.id).subscribe(
@@ -67,27 +72,55 @@ export class RoundDetailComponent implements OnInit {
     const application = this.applications.filter(app => app.profile.id === profile.id && app.round.id === round.id)[0];
     if (application.state === State.APPROVED) {
       alert('you have already approved this application.');
-      //console.log(`You have already approved this applicant with id ${application.id}`);
       return;
     }
     application.state = State.APPROVED;
-    this.applicationService
-      .update(application)
-      .subscribe(() => this.jhiAlertService.success('successful!'), () => this.jhiAlertService.error('error!'));
-    this.isSaving = false;
+    this.applicationService.update(application).subscribe(
+      () => {
+        this.jhiAlertService.success('successful!');
+        this.isSaving = false;
+      },
+      () => {
+        this.jhiAlertService.error('error!');
+        this.isSaving = false;
+      }
+    );
   }
   denyApplication(profile: IProfile, round: IRound) {
     this.isSaving = true;
     const application = this.applications.filter(app => app.profile.id === profile.id && app.round.id === round.id)[0];
     if (application.state === State.DENIED) {
       alert('you have already denied this application.');
-      //console.log(`You have already approved this applicant with id ${application.id}`);
       return;
     }
     application.state = State.DENIED;
-    this.applicationService
-      .update(application)
-      .subscribe(() => this.jhiAlertService.success('successful!'), () => this.jhiAlertService.error('error!'));
-    this.isSaving = false;
+    this.applicationService.update(application).subscribe(
+      () => {
+        this.jhiAlertService.success('successful!'), (this.isSaving = false);
+      },
+      () => {
+        this.jhiAlertService.error('error!');
+        this.isSaving = false;
+      }
+    );
+  }
+  deleteApplication(profile: IProfile, round: IRound) {
+    this.isDeleting = true;
+    const application = this.applications.filter(app => app.profile.id === profile.id && app.round.id === round.id)[0];
+    const modalRef = this.modalService.open(ApplicationDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.application = application;
+    this.previousState();
+    //this.applicationService.delete(application.id).subscribe(() => {
+    //  this.jhiAlertService.success('successful!');
+    //  this.isDeleting = false;
+    //}, () => {
+    //  this.jhiAlertService.error('error!');
+    // this.isDeleting = false;
+    //});
+  }
+  currentCap() {
+    if (this.isDeleting === false) {
+      return this.applications.length;
+    }
   }
 }

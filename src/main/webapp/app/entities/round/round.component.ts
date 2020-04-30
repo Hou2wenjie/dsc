@@ -8,6 +8,9 @@ import { RoundService } from './round.service';
 import { RoundDeleteDialogComponent } from './round-delete-dialog.component';
 import { RoundApplyDialogComponent } from 'app/entities/round/round-apply-dialog.component';
 import { AccountService } from 'app/core/auth/account.service';
+import { RoundDetailComponent } from 'app/entities/round/round-detail.component';
+import { ApplicationService } from 'app/entities/application/application.service';
+import { IApplication } from 'app/shared/model/application.model';
 
 @Component({
   selector: 'jhi-round',
@@ -16,12 +19,14 @@ import { AccountService } from 'app/core/auth/account.service';
 export class RoundComponent implements OnInit, OnDestroy {
   rounds: IRound[];
   eventSubscriber: Subscription;
+  applications: IApplication[];
   constructor(
     protected http: HttpClient,
     protected roundService: RoundService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
-    protected accountService: AccountService
+    protected accountService: AccountService,
+    protected applicationService: ApplicationService
   ) {}
 
   loadAll() {
